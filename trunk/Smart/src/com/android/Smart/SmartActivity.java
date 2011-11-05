@@ -26,6 +26,7 @@ import android.util.Log;
 import java.util.Locale;
 
 import com.android.Smart.dataobject.mifare.*;
+
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
@@ -90,35 +91,18 @@ public class SmartActivity extends SPANActivity {
     	       
     	       String buffer="";
     	       
-    	       Intent newIntent= new Intent();
-    	       
-    	       if (!this.checkCookie())
-    	       {
-	    	       Tag tagFromIntent = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-	    	      	    	       
-	    	       if (tagFromIntent!= null)
-	    	    	   newIntent=intent;
-	    	       
-    	    	   Bundle bundle=new Bundle();
-	    	       
-    	    	   buffer= andrewID.getText().toString();
-    	    	   bundle.putCharSequence("andrewID", buffer);
-	    	       
-	    	       buffer= andrewPassword.getText().toString();
-	    	       bundle.putCharSequence("andrewPassword", buffer);
-	    	      
-	    	       newIntent.setClass(SmartActivity.this, login.class);
-	    	       newIntent.putExtras(bundle);
-    	       }
-    	       
-    	       startActivity(newIntent);  	       
+    	       Log.i("SmartActivity", String.valueOf(checkAuthStatus()));
+    	       if (checkAuthStatus()) {
+					Toast.makeText(SmartActivity.this, "User already authenticated!", Toast.LENGTH_SHORT).show();
+					Intent intent = new Intent(SmartActivity.this, login.class);
+					startActivity(intent);
+				} else {
+					Log.i("SmartActivity", "Authenticating user!");
+					authenticateUser();
+				}
     	       finish();
 	       }
 
-		private boolean checkCookie() {
-			// checkCookie
-			return false;
-		}	   
        });
     }
     

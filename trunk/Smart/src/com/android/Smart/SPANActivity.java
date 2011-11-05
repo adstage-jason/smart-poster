@@ -27,7 +27,7 @@ public class SPANActivity extends Activity {
 		CookieHandler.setDefault(httpCookieMgr);
 	}
 	
-	public void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
 		// Ensure that the singleton CookieSyncManager is set up
@@ -78,6 +78,7 @@ public class SPANActivity extends Activity {
 	    	if (urlConnection != null)
 	    		urlConnection.disconnect();
 	    }
+		Log.i("CheckAuthStatus()", "User is authenticated!");
 		return true;
 	}
 	

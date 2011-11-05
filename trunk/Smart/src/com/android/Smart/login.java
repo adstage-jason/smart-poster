@@ -2,29 +2,26 @@ package com.android.Smart;
 
 import java.io.IOException;
 
-import com.android.Smart.dataobject.mifare.MifareBlock;
-import com.android.Smart.dataobject.mifare.MifareClassCard;
-import com.android.Smart.dataobject.mifare.MifareSector;
-import com.android.Smart.R;
-
-import android.R.color;
-import android.app.Activity;
 import android.app.PendingIntent;
-import android.nfc.NdefMessage;
-import android.nfc.NdefRecord;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.IntentFilter.MalformedMimeTypeException;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.MifareClassic;
 import android.os.Bundle;
-import android.widget.*;
 import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.IntentFilter.MalformedMimeTypeException;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
-public class login extends Activity{
+import com.android.Smart.dataobject.mifare.MifareBlock;
+import com.android.Smart.dataobject.mifare.MifareClassCard;
+import com.android.Smart.dataobject.mifare.MifareSector;
+
+public class login extends SPANActivity{
 	private Tag tempTag;
 	private NfcAdapter mAdapter;
  	private PendingIntent mPendingIntent;
@@ -56,12 +53,12 @@ public class login extends Activity{
 		Bundle bunde = this.getIntent().getExtras();
 		
 		
-		String buffer = bunde.getString("andrewID");
+		String buffer = "can't display"; //bunde.getString("andrewID");
 		TextView temp=(TextView)findViewById(R.id.text1);
 		temp.setText("Your andrewID is "+buffer);
 		
 		temp=(TextView)findViewById(R.id.text2);
-		buffer= bunde.getString("andrewPassword");
+		//buffer= bunde.getString("andrewPassword");
 		temp.setText("Your password is "+ buffer);
 		
 		//tempTag= bunde.getParcelable("tagFromIntent");
@@ -79,6 +76,8 @@ public class login extends Activity{
 		logIn.setOnClickListener(new Button.OnClickListener(){
 			public void onClick(View v)
 			{
+			   clearCookies();
+			   Toast.makeText(login.this, "Successfully logged out.", Toast.LENGTH_SHORT).show();
 			   Intent intent= new Intent();
 			   intent.setClass(login.this, SmartActivity.class);
 		       startActivity(intent);

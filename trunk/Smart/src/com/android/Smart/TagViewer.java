@@ -24,19 +24,14 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.android.Smart.ParsedNdefRecord;
-
-import java.util.List;
 
 /**
  * An {@link Activity} which handles a broadcast of a new tag that the device
  * just discovered.
  */
-public class TagViewer extends Activity {
+public class TagViewer extends SPANActivity {
 
     static final String TAG = "ViewTag";
 
