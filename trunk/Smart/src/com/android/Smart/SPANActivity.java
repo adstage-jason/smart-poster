@@ -46,32 +46,24 @@ public class SPANActivity extends Activity {
 		URL url = null;
 		HttpURLConnection urlConnection = null;
 		try {
+			
+			// Send a GET request to the server
 			url = new URL(serverURL);
 			urlConnection = (HttpURLConnection) url.openConnection();
 			urlConnection.setInstanceFollowRedirects(false);
-			Log.i("CheckAuthStatus()", String.valueOf(url.getProtocol()));
-			Log.i("CheckAuthStatus()", String.valueOf(urlConnection.getResponseMessage()));
 			urlConnection.connect();
 			InputStream in = new BufferedInputStream(urlConnection.getInputStream());
 			BufferedReader br = new BufferedReader(
                     new InputStreamReader(in));
+			
+			// WebISO does not use a 3xx redirect, so we need to check the meta tags in <head>
 			String inputLine;
-
 			while ((inputLine = br.readLine()) != null) 
-				//System.out.println(inputLine);
 				if (inputLine.contains("<meta http-equiv=\"Refresh\">")) {
 					br.close();
 					return false;
 				}
 			br.close();
-
-			Log.i("CheckAuthStatus()", url.toString());
-			Log.i("CheckAuthStatus()", urlConnection.getURL().toString());
-			Log.i("CheckAuthStatus()", String.valueOf(urlConnection.getResponseMessage()));
-			if (!url.getHost().equals(urlConnection.getURL().getHost())) {
-				Log.i("CheckAuthStatus()", "redirect!");
-				return false;
-			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

@@ -53,7 +53,7 @@ public class login extends SPANActivity{
 		Bundle bunde = this.getIntent().getExtras();
 		
 		
-		String buffer = "can't display"; //bunde.getString("andrewID");
+		String buffer = "not displayed"; //bunde.getString("andrewID");
 		TextView temp=(TextView)findViewById(R.id.text1);
 		temp.setText("Your andrewID is "+buffer);
 		
