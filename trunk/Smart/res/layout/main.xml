@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" android:orientation="vertical">
+<TextView  
+	android:id="@+id/logIntext"
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content" 
+    android:text="@string/logIn">
+    </TextView>
+<ImageView android:layout_width="wrap_content" android:id="@+id/imageView1" android:src="@drawable/cmu_logo" android:layout_height="wrap_content" android:adjustViewBounds="true"></ImageView>
+<TextView  
+	android:id="@+id/andrewIDtext"
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content" 
+    android:text="@string/andrewID">
+  </TextView>
+<EditText 
+	android:layout_height="wrap_content" 
+	android:id="@+id/editText2" 
+	android:inputType="textEmailAddress" 
+	android:layout_width="match_parent"></EditText>
+<TextView  
+	android:id="@+id/andrewPasswordtext"
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content" 
+    android:text="@string/andrewPassword">
+   </TextView>
+<EditText 
+	android:id="@+id/editText1" 
+	android:inputType="textPassword" 
+	android:layout_height="wrap_content" 
+	android:layout_width="match_parent">
+	</EditText>
+<Button 
+	android:layout_height="wrap_content" 
+	android:text="Log in" 
+	android:id="@+id/button1" 
+	android:layout_width="match_parent"></Button>
+
+</LinearLayout>
