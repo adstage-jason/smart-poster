@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+    <Button android:id="@+id/auth_button" android:text="@string/auth_button_label" android:layout_gravity="center" android:layout_width="match_parent" android:layout_height="wrap_content"></Button>
+    <Button android:layout_height="wrap_content" android:layout_width="match_parent" android:text="@string/test_button_label" android:id="@+id/test_button"></Button>
+    <Button android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/check_auth_status_button" android:text="@string/check_auth_status_title"></Button>
+    <Button android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/login_button" android:text="@string/login_button_title"></Button>
+    <Button android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/logout_button" android:text="@string/logout_button_title"></Button>
+</LinearLayout>

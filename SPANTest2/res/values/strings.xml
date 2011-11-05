@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello World, SPANTestActivity!</string>
+    <string name="app_name">SPANTest</string>
+    <string name="auth_button_label">Authenticate (WebISO)</string>
+    <string name="auth_screen_title">SPANTest Authentication</string>
+    <string name="test_button_label">Test Page (ece/~jasonwu)</string>
+    <string name="test_screen_title">SPANTest Test URL</string>
+    <string name="test_http_button_label">Test DefaultHttpClient</string>
+    <string name="check_auth_status_title">Check Authentication Status</string>
+    <string name="logout_button_title">Logout</string>
+    <string name="login_button_title">Login</string>
+</resources>
