@@ -35,8 +35,10 @@ public class AuthenticateActivity extends SPANActivity {
 	        if (url.equals(serverURL) && mgr.getCookie(serverURL) != null 
 	        		&& mgr.getCookie(serverURL).contains("pubcookie_s")) {
 	        	parseAndStoreCookie();
-				Intent intent = new Intent(AuthenticateActivity.this, login.class);
-				startActivity(intent);
+				//Intent intent = new Intent(AuthenticateActivity.this, login.class);
+				Intent intent = getIntent();
+				intent.setClass(AuthenticateActivity.this, login.class);
+	        	startActivity(intent);
 	        	AuthenticateActivity.this.finish();
 	        }
 	    }

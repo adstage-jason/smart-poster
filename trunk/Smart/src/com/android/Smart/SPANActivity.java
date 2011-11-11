@@ -74,9 +74,11 @@ public class SPANActivity extends Activity {
 		return true;
 	}
 	
-	protected void authenticateUser() {
+	protected void authenticateUser(Intent intent) {
 		// Send the user to the WebISO login page
-		Intent intent = new Intent(SPANActivity.this, AuthenticateActivity.class);
+		//Intent intent = new Intent(SPANActivity.this, AuthenticateActivity.class);
+		intent.setClass(SPANActivity.this, AuthenticateActivity.class);
+		
 		startActivity(intent);
 	}
 	

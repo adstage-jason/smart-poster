@@ -79,7 +79,8 @@ public class SmartActivity extends SPANActivity {
 
 		intent = getIntent();
 	//	resolveIntent(intent);
-       
+		
+		
        
        Button logIn;
        logIn=(Button)findViewById(R.id.button1);
@@ -94,11 +95,12 @@ public class SmartActivity extends SPANActivity {
     	       Log.i("SmartActivity", String.valueOf(checkAuthStatus()));
     	       if (checkAuthStatus()) {
 					Toast.makeText(SmartActivity.this, "User already authenticated!", Toast.LENGTH_SHORT).show();
-					Intent intent = new Intent(SmartActivity.this, login.class);
+					Intent newintent = new Intent(SmartActivity.this, login.class);
+					intent.setClass(SmartActivity.this, login.class);
 					startActivity(intent);
 				} else {
 					Log.i("SmartActivity", "Authenticating user!");
-					authenticateUser();
+					authenticateUser(intent);
 				}
     	       finish();
 	       }
