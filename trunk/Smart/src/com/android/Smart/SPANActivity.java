@@ -20,7 +20,7 @@ import android.webkit.CookieSyncManager;
 
 public class SPANActivity extends Activity {
 	
-	public static final String serverURL = "https://www.ece.cmu.edu/~jasonwu/";
+	public static final String serverURL = "https://www.ece.cmu.edu/~jasonwu/span/";
 	private static java.net.CookieManager httpCookieMgr = new java.net.CookieManager();
 	
 	static {
