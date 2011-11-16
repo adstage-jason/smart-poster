@@ -11,6 +11,12 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
+import org.xml.sax.InputSource;
+import org.xml.sax.XMLReader;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -114,6 +120,28 @@ public class SPANActivity extends Activity {
 		httpCookieMgr = new java.net.CookieManager();
 		CookieHandler.setDefault(httpCookieMgr);
 		CookieManager.getInstance().removeAllCookie();
+	}
+	
+	protected SPANHandler callGetPoster(String tagID) {
+		SPANHandler handler = null;
+		try {
+			URL url = new URL(serverURL + "get_poster.php?id=" + tagID);
+			HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+			urlConnection.setInstanceFollowRedirects(true);
+			urlConnection.connect();
+			InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+			SAXParserFactory spf = SAXParserFactory.newInstance();
+			SAXParser sp = spf.newSAXParser();
+			XMLReader xr = sp.getXMLReader();
+			handler = new SPANHandler();
+			xr.setContentHandler(handler);
+			xr.parse(new InputSource(in));
+			Log.i("callGetPoster()", String.valueOf(handler.getErrorCode()));
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
+		Log.i("callGetPoster()", String.valueOf(handler));
+		return handler;
 	}
 
 }
