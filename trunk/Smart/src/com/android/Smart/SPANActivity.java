@@ -24,6 +24,8 @@ import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 
+import com.android.Smart.poster.Poster;
+
 public class SPANActivity extends Activity {
 	
 	public static final String serverURL = "https://www.ece.cmu.edu/~jasonwu/span/";
@@ -122,8 +124,8 @@ public class SPANActivity extends Activity {
 		CookieManager.getInstance().removeAllCookie();
 	}
 	
-	protected SPANHandler callGetPoster(String tagID) {
-		SPANHandler handler = null;
+	protected Poster getPoster(String tagID) {
+		Poster poster = null;
 		try {
 			URL url = new URL(serverURL + "get_poster.php?id=" + tagID);
 			HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
@@ -133,15 +135,21 @@ public class SPANActivity extends Activity {
 			SAXParserFactory spf = SAXParserFactory.newInstance();
 			SAXParser sp = spf.newSAXParser();
 			XMLReader xr = sp.getXMLReader();
-			handler = new SPANHandler();
+			SPANHandler handler = new SPANHandler();
 			xr.setContentHandler(handler);
 			xr.parse(new InputSource(in));
 			Log.i("callGetPoster()", String.valueOf(handler.getErrorCode()));
+			if (handler.getErrorCode() == 0) {
+				poster = handler.getPoster();
+			} else if (handler.getErrorCode() == 1) {
+				throw new Poster.NoSuchPosterException();
+			} else if (handler.getErrorCode() == 2) {
+				throw new Poster.RevokedPosterException();
+			}
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 		}
-		Log.i("callGetPoster()", String.valueOf(handler));
-		return handler;
+		return poster;
 	}
 
 }
