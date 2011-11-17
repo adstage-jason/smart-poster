@@ -15,26 +15,43 @@ public final class R {
         public static final int icon=0x7f020001;
     }
     public static final class id {
-        public static final int andrewIDtext=0x7f060007;
-        public static final int andrewPasswordtext=0x7f060009;
+        public static final int andrewIDtext=0x7f06000c;
+        public static final int andrewPasswordtext=0x7f06000e;
         public static final int auth_webview=0x7f060000;
-        public static final int button1=0x7f06000b;
-        public static final int button2=0x7f060003;
-        public static final int editText1=0x7f06000a;
-        public static final int editText2=0x7f060008;
-        public static final int imageView1=0x7f060006;
-        public static final int list=0x7f06000d;
-        public static final int logIntext=0x7f060005;
-        public static final int tagInformation=0x7f060004;
-        public static final int text1=0x7f060001;
-        public static final int text2=0x7f060002;
-        public static final int title=0x7f06000c;
+        public static final int button1=0x7f060010;
+        public static final int button2=0x7f060008;
+        public static final int button3=0x7f060005;
+        public static final int description_text=0x7f060002;
+        public static final int editText1=0x7f06000f;
+        public static final int editText2=0x7f06000d;
+        public static final int imageView1=0x7f06000b;
+        public static final int list=0x7f06001c;
+        public static final int logIntext=0x7f06000a;
+        public static final int option1_button=0x7f060012;
+        public static final int option2_button=0x7f060013;
+        public static final int option3_button=0x7f060014;
+        public static final int option4_button=0x7f060015;
+        public static final int option5_button=0x7f060016;
+        public static final int option6_button=0x7f060017;
+        public static final int option7_button=0x7f060018;
+        public static final int option8_button=0x7f060019;
+        public static final int option9_button=0x7f06001a;
+        public static final int question_text=0x7f060011;
+        public static final int tagInformation=0x7f060009;
+        public static final int text1=0x7f060006;
+        public static final int text2=0x7f060007;
+        public static final int textView1=0x7f060001;
+        public static final int textView2=0x7f060003;
+        public static final int title=0x7f06001b;
+        public static final int url_text=0x7f060004;
     }
     public static final class layout {
         public static final int auth_screen=0x7f030000;
-        public static final int login=0x7f030001;
-        public static final int main=0x7f030002;
-        public static final int tag_viewer=0x7f030003;
+        public static final int link_poster=0x7f030001;
+        public static final int login=0x7f030002;
+        public static final int main=0x7f030003;
+        public static final int poll_poster=0x7f030004;
+        public static final int tag_viewer=0x7f030005;
     }
     public static final class string {
         public static final int andrewID=0x7f050002;
@@ -46,6 +63,7 @@ public final class R {
         public static final int logIn=0x7f050001;
         public static final int login_button_title=0x7f05000c;
         public static final int logout_button_title=0x7f05000b;
+        public static final int open_in_browser=0x7f05000d;
         public static final int test_button_label=0x7f050007;
         public static final int test_http_button_label=0x7f050009;
         public static final int test_screen_title=0x7f050008;

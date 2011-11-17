@@ -1,42 +1,28 @@
 package com.android.Smart;
 
-import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.PendingIntent;
-import android.app.ListActivity;
-
-import android.os.Parcelable;
-import android.os.Bundle;
-import android.os.Parcelable;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.WindowManager;
-import android.widget.*;
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.IntentFilter.MalformedMimeTypeException;
-
-import java.io.IOException;
-import java.nio.charset.Charset;
-
-import android.util.Log;
-import java.util.Locale;
-
-import com.android.Smart.dataobject.mifare.*;
-
-import android.nfc.NdefMessage;
-import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
-import android.nfc.Tag;
-import android.nfc.tech.*;
+import android.nfc.tech.MifareUltralight;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.Smart.connector.TagConnector;
 
 public class SmartActivity extends SPANActivity {
 	
 	private EditText andrewID;
     private EditText andrewPassword;
+    private TagConnector tagConnector;
 
  // NFC parts
  	private NfcAdapter mAdapter;
@@ -54,6 +40,8 @@ public class SmartActivity extends SPANActivity {
     public void onCreate(Bundle savedState) {
        super.onCreate(savedState);
        setContentView(R.layout.main);
+       
+       tagConnector = new TagConnector();
        
        mAdapter = NfcAdapter.getDefaultAdapter(this);
     // Create a generic PendingIntent that will be deliver to this activity.
@@ -74,12 +62,18 @@ public class SmartActivity extends SPANActivity {
 		mFilters = new IntentFilter[] { ndef, };
 
 		// Setup a tech list for all NfcF tags
-		mTechLists = new String[][] { new String[] { MifareClassic.class
+		mTechLists = new String[][] { new String[] { MifareUltralight.class
 				.getName() } };
 
 		intent = getIntent();
+		
 	//	resolveIntent(intent);
 		
+		// First check if the user is authenticated
+		// If so, then there is no need to show the login screen
+		if (checkAuthStatus()) {
+			
+		}
 		
        
        Button logIn;
@@ -97,7 +91,7 @@ public class SmartActivity extends SPANActivity {
 					Toast.makeText(SmartActivity.this, "User already authenticated!", Toast.LENGTH_SHORT).show();
 					Intent newintent = new Intent(SmartActivity.this, login.class);
 					intent.setClass(SmartActivity.this, login.class);
-					startActivity(intent);
+					startActivity(newintent);
 				} else {
 					Log.i("SmartActivity", "Authenticating user!");
 					authenticateUser(intent);
@@ -114,12 +108,16 @@ public class SmartActivity extends SPANActivity {
     @Override
     public void onResume() {
         super.onResume();
+        if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(getIntent().getAction())) {
+            Log.i("Test", tagConnector.readTag(getIntent()));
+        }
      //   mAdapter.enableForegroundDispatch(this, mPendingIntent, mFilters, mTechLists);
     }
 
    @Override
     public void onNewIntent(Intent intent) {
         Log.i("Foreground dispatch", "Discovered tag with intent: " + intent);
+        Log.i("Test", tagConnector.readTag(intent));
        // mText.setText("Discovered tag " + ++mCount + " with intent: " + intent);
     }
    
@@ -127,5 +125,16 @@ public class SmartActivity extends SPANActivity {
     public void onPause() {
         super.onPause();
      //   mAdapter.disableForegroundDispatch(this);
+    }
+    
+    private void showTagDialog() {
+    	AlertDialog alertDialog = new AlertDialog.Builder(this).create();  
+    	alertDialog.setTitle("Smart Poster Detected!");  
+    	alertDialog.setMessage("To read the poster content, please sign in!");  
+    	alertDialog.setButton("OK", new DialogInterface.OnClickListener() {  
+    		public void onClick(DialogInterface dialog, int which) {  
+    			return;  
+    		} });
+    	alertDialog.show();
     }
 }

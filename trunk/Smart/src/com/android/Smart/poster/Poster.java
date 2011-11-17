@@ -1,7 +1,10 @@
 package com.android.Smart.poster;
 
-public abstract class Poster {
+import java.io.Serializable;
+
+public abstract class Poster implements Serializable {
 	
+	private static final long serialVersionUID = 9079110342394305206L;
 	private String tagID;
 	
 	public Poster(String tagID) {

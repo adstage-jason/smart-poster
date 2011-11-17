@@ -5,7 +5,8 @@ import java.net.URL;
 import java.util.ArrayList;
 
 public class PollPoster extends Poster {
-	
+
+	private static final long serialVersionUID = -7796035100178703468L;
 	private URL url;
 	private String question;
 	private String postKey;

@@ -5,6 +5,7 @@ import java.net.URL;
 
 public class LinkPoster extends Poster {
 	
+	private static final long serialVersionUID = 7592179133566488663L;
 	private URL url;
 	private String description;
 	

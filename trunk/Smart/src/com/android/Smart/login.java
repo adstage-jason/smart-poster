@@ -9,6 +9,7 @@ import android.content.IntentFilter.MalformedMimeTypeException;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.MifareClassic;
+import android.nfc.tech.MifareUltralight;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,9 +18,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.Smart.connector.TagConnector;
 import com.android.Smart.dataobject.mifare.MifareBlock;
 import com.android.Smart.dataobject.mifare.MifareClassCard;
 import com.android.Smart.dataobject.mifare.MifareSector;
+import com.android.Smart.poster.LinkPoster;
+import com.android.Smart.poster.PollPoster;
+import com.android.Smart.poster.Poster;
+import com.android.Smart.poster.Poster.NoSuchPosterException;
+import com.android.Smart.poster.Poster.RevokedPosterException;
 
 public class login extends SPANActivity{
 	private Tag tempTag;
@@ -39,6 +46,7 @@ public class login extends SPANActivity{
     LinearLayout mTagContent;
     private MifareClassic mfc;
     private byte []data;
+    private TagConnector tagConnector;
     
     Intent intent;
     
@@ -48,6 +56,7 @@ public class login extends SPANActivity{
 		setContentView(R.layout.login);		
 		
 		intent = getIntent();
+		tagConnector = new TagConnector();
 		
 		Tag tagFromIntent = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
 		Bundle bunde = this.getIntent().getExtras();
@@ -88,27 +97,29 @@ public class login extends SPANActivity{
 		
        
         
-		mAdapter = NfcAdapter.getDefaultAdapter(this);
-		mPendingIntent = PendingIntent.getActivity(this, 0, new Intent(this,
-					getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
-		IntentFilter ndef = new IntentFilter(NfcAdapter.ACTION_TECH_DISCOVERED);
-	  
-        mPendingIntent = PendingIntent.getActivity(this, 0,
-                new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+	       mAdapter = NfcAdapter.getDefaultAdapter(this);
+	       // Create a generic PendingIntent that will be deliver to this activity.
+	   	// The NFC stack
+	   	// will fill in the intent with the details of the discovered tag before
+	   	// delivering to
+	   	// this activity.
+	          mPendingIntent = PendingIntent.getActivity(this, 0, new Intent(this,
+	   				getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+	       // Setup an intent filter for all MIME based dispatches
+	          IntentFilter ndef = new IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED);
+	    
+	   		try {
+	   			ndef.addDataType("*/*");
+	   		} catch (MalformedMimeTypeException e) {
+	   			throw new RuntimeException("fail", e);
+	   		}
+	   		mFilters = new IntentFilter[] { ndef, };
 
-        // Setup an intent filter for all MIME based dispatches
-        try {
-            ndef.addDataType("*/*");
-        } catch (MalformedMimeTypeException e) {
-            throw new RuntimeException("fail", e);
-        }
-        mFilters = new IntentFilter[] {
-                ndef,
-        };
+	   		// Setup a tech list for all NfcF tags
+	   		mTechLists = new String[][] { new String[] { MifareUltralight.class
+	   				.getName() } };
 
-        // Setup a tech list for all MifareClassic tags
-        mTechLists = new String[][] { new String[] { MifareClassic.class.getName() } };
-       // resolveIntent(intent);
+	   		intent = getIntent();
 
 	}
 	
@@ -191,10 +202,33 @@ public class login extends SPANActivity{
 	        mAdapter.enableForegroundDispatch(this, mPendingIntent, mFilters, mTechLists);
 	    }
 
-	  	@Override
+	   @Override
 	    public void onNewIntent(Intent intent) {
-	        Log.i("Foreground dispatch", "Discovered tag with intent: " + intent);
-	        mText.setText("Discovered tag " + ++mCount + " with intent: " + intent);
+		   Log.i("Foreground dispatch", "Discovered tag with intent: " + intent);
+	       mText.setText("Discovered tag " + ++mCount + " with intent: " + intent);
+	       String tagID = tagConnector.readTag(intent);
+	       Poster poster = null;
+			try {
+				poster = getPoster(tagID);
+			} catch (NoSuchPosterException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (RevokedPosterException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	       if (poster instanceof LinkPoster) {
+	    	   LinkPoster lp = (LinkPoster) poster;
+	    	   Intent newIntent = new Intent(this, LinkPosterActivity.class);
+	    	   Log.i("Hello", String.valueOf(lp.getDescription()));
+	    	   newIntent.putExtra("LinkPoster", lp);
+	    	   startActivity(newIntent);
+	       } else if (poster instanceof PollPoster) {
+	    	   Intent newIntent = new Intent(this, PollPosterActivity.class);
+	    	   PollPoster pp = (PollPoster) poster;
+	    	   newIntent.putExtra("PollPoster", pp);
+	    	   startActivity(newIntent);
+	       }
 	    }
 	   
 	    @Override

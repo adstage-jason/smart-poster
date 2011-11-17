@@ -19,6 +19,7 @@
         	
         	<intent-filter> 
         		<action android:name="android.nfc.action.NDEF_DISCOVERED"/> 
+        		<category android:name="android.intent.category.DEFAULT"/>
         		<data android:mimeType="text/plain"/> 
         	</intent-filter>
     
@@ -44,6 +45,8 @@
         
 		<activity android:name=".login"></activity>
 		<activity android:name=".TagViewer"></activity>
+		<activity android:name=".LinkPosterActivity"></activity>
+		<activity android:name=".PollPosterActivity"></activity>
 		<activity android:name="AuthenticateActivity" android:label="@string/auth_screen_title"></activity>
     </application>
 </manifest>

@@ -124,7 +124,7 @@ public class SPANActivity extends Activity {
 		CookieManager.getInstance().removeAllCookie();
 	}
 	
-	protected Poster getPoster(String tagID) {
+	protected Poster getPoster(String tagID) throws Poster.NoSuchPosterException, Poster.RevokedPosterException {
 		Poster poster = null;
 		try {
 			URL url = new URL(serverURL + "get_poster.php?id=" + tagID);
@@ -147,7 +147,7 @@ public class SPANActivity extends Activity {
 				throw new Poster.RevokedPosterException();
 			}
 		} catch (Exception e) {
-			System.err.println(e.getMessage());
+			Log.i("Oh noes!", e.getMessage());
 		}
 		return poster;
 	}
