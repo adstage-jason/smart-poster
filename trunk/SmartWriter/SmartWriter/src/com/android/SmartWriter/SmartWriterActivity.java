@@ -36,6 +36,7 @@ public class SmartWriterActivity extends Activity {
      			   Intent intent = new Intent(SmartWriterActivity.this, WriteTagActivity.class);
      			   intent.putExtra("Tag ID", tagID);
      			   startActivity(intent);
+     			   SmartWriterActivity.this.finish();
      		   }
  	       }
 

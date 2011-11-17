@@ -72,6 +72,7 @@ public class WriteTagActivity extends Activity {
 				  public void onClick(DialogInterface dialog, int which) {  
 					  Intent intent = new Intent(WriteTagActivity.this, SmartWriterActivity.class);
 	     			  startActivity(intent);
+	     			  WriteTagActivity.this.finish();
 				  } });
 			  alertDialog.show();
         }
