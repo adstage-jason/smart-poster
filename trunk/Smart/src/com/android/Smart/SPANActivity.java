@@ -84,10 +84,23 @@ public class SPANActivity extends Activity {
 	
 	protected void authenticateUser(Intent intent) {
 		// Send the user to the WebISO login page
-		//Intent intent = new Intent(SPANActivity.this, AuthenticateActivity.class);
-		intent.setClass(SPANActivity.this, AuthenticateActivity.class);
+		Log.i("SmartActivity", "auth");
+		Intent newintent = new Intent(SPANActivity.this, AuthenticateActivity.class);
+		if (intent.getExtras()== null)
+		{
+			startActivity(newintent);
+			Log.i("SmartActivity", "null intent");
+		}
+		else
+		{
+			intent.setClass(SPANActivity.this, AuthenticateActivity.class);
+			startActivity(intent);
+			Log.i("SmartActivity", "not null intent");
+		}
 		
-		startActivity(intent);
+
+		
+		//startActivity(intent);
 	}
 	
 	protected void parseAndStoreCookie() {

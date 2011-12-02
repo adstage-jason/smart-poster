@@ -75,14 +75,14 @@ public class SmartActivity extends SPANActivity {
 			
 		}
 		
-       
+		
        Button logIn;
-       logIn=(Button)findViewById(R.id.button1);
+       logIn=(Button)findViewById(R.id.button1);Log.i("flow1", "flow");
        logIn.setOnClickListener(new Button.OnClickListener(){
     	   public void onClick(View v)
     	   {
-    		   andrewID=(EditText)findViewById(R.id.editText2);
-    	       andrewPassword=(EditText)findViewById(R.id.editText1);
+    		 //  andrewID=(EditText)findViewById(R.id.editText2);
+    	      // andrewPassword=(EditText)findViewById(R.id.editText1);
     	       
     	       String buffer="";
     	       
@@ -90,10 +90,21 @@ public class SmartActivity extends SPANActivity {
     	       if (checkAuthStatus()) {
 					Toast.makeText(SmartActivity.this, "User already authenticated!", Toast.LENGTH_SHORT).show();
 					Intent newintent = new Intent(SmartActivity.this, login.class);
-					intent.setClass(SmartActivity.this, login.class);
-					startActivity(newintent);
+					if (intent.getExtras()== null)
+					{
+						startActivity(newintent);
+						Log.i("SmartActivity", "null intent");
+					}
+					else
+					{
+						intent.setClass(SmartActivity.this, login.class);
+						startActivity(intent);
+						Log.i("SmartActivity", "not null intent");
+					}
+					
 				} else {
 					Log.i("SmartActivity", "Authenticating user!");
+					
 					authenticateUser(intent);
 				}
     	       finish();

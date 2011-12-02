@@ -54,13 +54,11 @@ public class login extends SPANActivity{
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login);		
-		
+		Log.i("SmartActivity", "Login");
 		intent = getIntent();
 		tagConnector = new TagConnector();
 		
 		Tag tagFromIntent = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-		Bundle bunde = this.getIntent().getExtras();
-		
 		
 		String buffer = "not displayed"; //bunde.getString("andrewID");
 		TextView temp=(TextView)findViewById(R.id.text1);
@@ -77,8 +75,37 @@ public class login extends SPANActivity{
 
 		 mText.setText("Scan a tag");
 		
+		/* intent dispatch */
 		if (tagFromIntent!=null)
-			resolveIntent(intent);
+		{
+			String tagID = tagConnector.readTag(intent);
+			if (tagID !=null)
+			{
+				
+				Poster poster = null;
+				try {
+					poster = getPoster(tagID);
+				} catch (NoSuchPosterException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (RevokedPosterException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		       if (poster instanceof LinkPoster) {
+		    	   LinkPoster lp = (LinkPoster) poster;
+		    	   Intent newIntent = new Intent(this, LinkPosterActivity.class);
+		    	   Log.i("Hello", String.valueOf(lp.getDescription()));
+		    	   newIntent.putExtra("LinkPoster", lp);
+		    	   startActivity(newIntent);
+		       } else if (poster instanceof PollPoster) {
+		    	   Intent newIntent = new Intent(this, PollPosterActivity.class);
+		    	   PollPoster pp = (PollPoster) poster;
+		    	   newIntent.putExtra("PollPoster", pp);
+		    	   startActivity(newIntent);
+		       }
+			}
+		}
 		
 		Button logIn;
 		logIn=(Button)findViewById(R.id.button2);
@@ -124,7 +151,7 @@ public class login extends SPANActivity{
 	}
 	
 	
-	void resolveIntent(Intent intent) {
+/*	void resolveIntent(Intent intent) {
 		   
 		
 		mText.setText("Discovered tag " + ++mCount + " with intent: " + intent);
@@ -194,7 +221,7 @@ public class login extends SPANActivity{
 				}
 			}
 		}// End of method
-	}
+	}*/
    
 	  @Override
 	    public void onResume() {
@@ -207,7 +234,13 @@ public class login extends SPANActivity{
 		   Log.i("Foreground dispatch", "Discovered tag with intent: " + intent);
 	       mText.setText("Discovered tag " + ++mCount + " with intent: " + intent);
 	       String tagID = tagConnector.readTag(intent);
-	       Poster poster = null;
+	       if (tagID != null)
+	       {
+	    /*   Log.i("Qilin", "tagID is null");
+	    	   Intent newIntent = new Intent(this, login.class);
+	    	   startActivity(newIntent);
+	       }*/
+	    	Poster poster = null;
 			try {
 				poster = getPoster(tagID);
 			} catch (NoSuchPosterException e) {
@@ -228,6 +261,7 @@ public class login extends SPANActivity{
 	    	   PollPoster pp = (PollPoster) poster;
 	    	   newIntent.putExtra("PollPoster", pp);
 	    	   startActivity(newIntent);
+	       }
 	       }
 	    }
 	   

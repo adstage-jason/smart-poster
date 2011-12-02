@@ -38,6 +38,7 @@ public class AuthenticateActivity extends SPANActivity {
 				//Intent intent = new Intent(AuthenticateActivity.this, login.class);
 				Intent intent = getIntent();
 				intent.setClass(AuthenticateActivity.this, login.class);
+				Log.i("SmartActivity", "web");
 	        	startActivity(intent);
 	        	AuthenticateActivity.this.finish();
 	        }

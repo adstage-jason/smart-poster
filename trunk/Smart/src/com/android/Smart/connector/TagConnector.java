@@ -17,6 +17,8 @@ public class TagConnector {
 
 	public String readTag(Intent intent) {
 		NdefMessage[] messages = getNdefMessages(intent);
+		if (messages == null)
+			return null;
 		byte[] payload = messages[0].getRecords()[0].getPayload();
 		String placeId = new String(payload);
 		// what's with the "en" in front of payload?
