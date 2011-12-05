@@ -2,6 +2,7 @@ package com.android.Smart;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.CookieHandler;
@@ -11,10 +12,12 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
 import android.app.Activity;
@@ -159,8 +162,14 @@ public class SPANActivity extends Activity {
 			} else if (handler.getErrorCode() == 2) {
 				throw new Poster.RevokedPosterException();
 			}
-		} catch (Exception e) {
+		} catch (IOException e) {
 			Log.i("Oh noes!", e.getMessage());
+		} catch (SAXException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParserConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return poster;
 	}

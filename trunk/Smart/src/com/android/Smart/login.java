@@ -1,8 +1,8 @@
 package com.android.Smart;
 
-import java.io.IOException;
-
+import android.app.AlertDialog;
 import android.app.PendingIntent;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.IntentFilter.MalformedMimeTypeException;
@@ -19,9 +19,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.Smart.connector.TagConnector;
-import com.android.Smart.dataobject.mifare.MifareBlock;
-import com.android.Smart.dataobject.mifare.MifareClassCard;
-import com.android.Smart.dataobject.mifare.MifareSector;
 import com.android.Smart.poster.LinkPoster;
 import com.android.Smart.poster.PollPoster;
 import com.android.Smart.poster.Poster;
@@ -244,11 +241,19 @@ public class login extends SPANActivity{
 			try {
 				poster = getPoster(tagID);
 			} catch (NoSuchPosterException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				AlertDialog alertDialog = new AlertDialog.Builder(this).create();  
+				  alertDialog.setTitle("Invalid Poster");  
+				  alertDialog.setButton("OK", new DialogInterface.OnClickListener() {  
+					  public void onClick(DialogInterface dialog, int which) {  
+					  } });
+				  alertDialog.show();
 			} catch (RevokedPosterException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				AlertDialog alertDialog = new AlertDialog.Builder(this).create();  
+				  alertDialog.setTitle("Disabled Poster");
+				  alertDialog.setButton("OK", new DialogInterface.OnClickListener() {  
+					  public void onClick(DialogInterface dialog, int which) {  
+					  } });
+				  alertDialog.show();
 			}
 	       if (poster instanceof LinkPoster) {
 	    	   LinkPoster lp = (LinkPoster) poster;
