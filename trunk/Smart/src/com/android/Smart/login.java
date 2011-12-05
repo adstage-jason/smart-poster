@@ -83,11 +83,19 @@ public class login extends SPANActivity{
 				try {
 					poster = getPoster(tagID);
 				} catch (NoSuchPosterException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					AlertDialog alertDialog = new AlertDialog.Builder(this).create();  
+					  alertDialog.setTitle("Invalid Poster");  
+					  alertDialog.setButton("OK", new DialogInterface.OnClickListener() {  
+						  public void onClick(DialogInterface dialog, int which) {  
+						  } });
+					  alertDialog.show();
 				} catch (RevokedPosterException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					AlertDialog alertDialog = new AlertDialog.Builder(this).create();  
+					  alertDialog.setTitle("Disabled Poster");
+					  alertDialog.setButton("OK", new DialogInterface.OnClickListener() {  
+						  public void onClick(DialogInterface dialog, int which) {  
+						  } });
+					  alertDialog.show();
 				}
 		       if (poster instanceof LinkPoster) {
 		    	   LinkPoster lp = (LinkPoster) poster;
