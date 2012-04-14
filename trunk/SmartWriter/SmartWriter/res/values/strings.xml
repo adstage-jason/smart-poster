@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-    <string name="hello">Please enter a poster/tag ID:</string>
-    <string name="app_name">SmartWriter</string>
-    <string name="write_tag_string">Please place your phone over an NFC tag.</string>
-
-</resources>
