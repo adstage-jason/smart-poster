@@ -31,9 +31,8 @@ public class PollPosterActivity extends Activity {
 		Button button6 = (Button)findViewById(R.id.option6_button);
 		Button button7 = (Button)findViewById(R.id.option7_button);
 		Button button8 = (Button)findViewById(R.id.option8_button);
-		Button button9 = (Button)findViewById(R.id.option9_button);
 		Button[] buttons = new Button[] { button1, button2, button3, button4, button5, button6,
-				button7, button8, button9 };
+				button7, button8 };
 		
 		int i = 0;
 		for (PollOption option : poster.getOptions()) {
@@ -53,7 +52,7 @@ public class PollPosterActivity extends Activity {
 	         });
 			i++;
 		}
-		for (; i < 9; i++) { // only 9 buttons!
+		for (; i < 8; i++) { // only 8 buttons!
 			buttons[i].setEnabled(false);
 			buttons[i].setVisibility(4);
 		}

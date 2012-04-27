@@ -1,74 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" android:orientation="vertical">
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
 
     <TextView
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Question:" />
-    
-<TextView
-    android:id="@+id/question_text"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:text="~~~~~" >
 
+    <TextView
+        android:id="@+id/question_text"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.35"
+        android:text="~~~~~" >
     </TextView>
 
-<Button
-    android:id="@+id/option1_button"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="~" >
-</Button>
-<Button
-    android:id="@+id/option2_button"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="~" >
-</Button>
-<Button
-    android:id="@+id/option3_button"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="~" >
-</Button>
-<Button
-    android:id="@+id/option4_button"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="~" >
-</Button>
-<Button
-    android:id="@+id/option5_button"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="~" >
-</Button>
-<Button
-    android:id="@+id/option6_button"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="~" >
-</Button>
-<Button
-    android:id="@+id/option7_button"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="~" >
-</Button>
-<Button
-    android:id="@+id/option8_button"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="~" >
-</Button>
-<Button
-    android:id="@+id/option9_button"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="~" >
-</Button>
+    <Button
+        android:id="@+id/option1_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="~" >
+    </Button>
+
+    <Button
+        android:id="@+id/option2_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="~" >
+    </Button>
+
+    <Button
+        android:id="@+id/option3_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="~" >
+    </Button>
+
+    <Button
+        android:id="@+id/option4_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="~" >
+    </Button>
+
+    <Button
+        android:id="@+id/option5_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="~" >
+    </Button>
+
+    <Button
+        android:id="@+id/option6_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="~" >
+    </Button>
+
+    <Button
+        android:id="@+id/option7_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="~" >
+    </Button>
+
+    <Button
+        android:id="@+id/option8_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="~" >
+    </Button>
+
 </LinearLayout>

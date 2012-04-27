@@ -239,6 +239,7 @@ public class login extends SPANActivity{
 		   Log.i("Foreground dispatch", "Discovered tag with intent: " + intent);
 	       mText.setText("Discovered tag " + ++mCount + " with intent: " + intent);
 	       String tagID = tagConnector.readTag(intent);
+	       Log.i("login.java", tagID);
 	       if (tagID != null)
 	       {
 	    /*   Log.i("Qilin", "tagID is null");
@@ -248,6 +249,7 @@ public class login extends SPANActivity{
 	    	Poster poster = null;
 			try {
 				poster = getPoster(tagID);
+				System.out.println(poster);
 			} catch (NoSuchPosterException e) {
 				AlertDialog alertDialog = new AlertDialog.Builder(this).create();  
 				  alertDialog.setTitle("Invalid Poster");  
