@@ -14,4 +14,5 @@
     <string name="logout_button_title">Logout</string>
     <string name="login_button_title">Login</string>
     <string name="open_in_browser">Open in Browser</string>
+    <string name="like">Like!</string>
 </resources>
