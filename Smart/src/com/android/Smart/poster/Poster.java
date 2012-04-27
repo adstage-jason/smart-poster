@@ -5,7 +5,7 @@ import java.io.Serializable;
 public abstract class Poster implements Serializable {
 	
 	private static final long serialVersionUID = 9079110342394305206L;
-	private String tagID;
+	protected String tagID;
 	
 	public Poster(String tagID) {
 		this.tagID = tagID;
@@ -21,6 +21,10 @@ public abstract class Poster implements Serializable {
 	
 	public static class RevokedPosterException extends Exception {
 		private static final long serialVersionUID = 5859334351007143331L;
+	}
+	
+	public static class AlreadyVotedException extends Exception {
+		private static final long serialVersionUID = -7335482597453351924L;
 	}
 
 }

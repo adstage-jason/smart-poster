@@ -28,6 +28,8 @@ import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 
 import com.android.Smart.poster.Poster;
+import com.android.Smart.poster.Poster.NoSuchPosterException;
+import com.android.Smart.poster.Poster.RevokedPosterException;
 
 public class SPANActivity extends Activity {
 	
@@ -170,6 +172,40 @@ public class SPANActivity extends Activity {
 			Log.i("getPoster - ParserConfig", e.getMessage());
 		}
 		return poster;
+	}
+	
+	protected boolean submitVote(String tagID) throws Poster.AlreadyVotedException, 
+		NoSuchPosterException, RevokedPosterException {
+		try {
+			URL url = new URL(serverURL + "vote.php?id=" + tagID);
+			HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+			urlConnection.setInstanceFollowRedirects(true);
+			urlConnection.connect();
+			InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+			SAXParserFactory spf = SAXParserFactory.newInstance();
+			SAXParser sp = spf.newSAXParser();
+			XMLReader xr = sp.getXMLReader();
+			VoteResponseHandler handler = new VoteResponseHandler();
+			xr.setContentHandler(handler);
+			xr.parse(new InputSource(in));
+			Log.i("callGetPoster()", String.valueOf(handler.getErrorCode()));
+			if (handler.getErrorCode() == 0) {
+				return true;
+			} else if (handler.getErrorCode() == 1) {
+				throw new Poster.NoSuchPosterException();
+			} else if (handler.getErrorCode() == 2) {
+				throw new Poster.RevokedPosterException();
+			} else if (handler.getErrorCode() == 3) {
+				throw new Poster.AlreadyVotedException();
+			}
+		} catch (IOException e) {
+			Log.i("getPoster - IO", e.getMessage());
+		} catch (SAXException e) {
+			Log.i("getPoster - SAX", e.getMessage());
+		} catch (ParserConfigurationException e) {
+			Log.i("getPoster - ParserConfig", e.getMessage());
+		}
+		return false;
 	}
 
 }
