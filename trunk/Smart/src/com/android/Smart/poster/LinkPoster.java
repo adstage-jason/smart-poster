@@ -2,6 +2,7 @@ package com.android.Smart.poster;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLDecoder;
 
 public class LinkPoster extends Poster {
 	
@@ -15,7 +16,8 @@ public class LinkPoster extends Poster {
 	
 	public void setURL(String url) {
 		try {
-			this.url = new URL(url);
+			String decoded = URLDecoder.decode(url);
+			this.url = new URL(decoded);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}

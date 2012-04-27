@@ -163,11 +163,11 @@ public class SPANActivity extends Activity {
 				throw new Poster.RevokedPosterException();
 			}
 		} catch (IOException e) {
-			//Log.i("Oh noes!", e.getMessage());
+			Log.i("getPoster - IO", e.getMessage());
 		} catch (SAXException e) {
-			//e.printStackTrace();
+			Log.i("getPoster - SAX", e.getMessage());
 		} catch (ParserConfigurationException e) {
-			//e.printStackTrace();
+			Log.i("getPoster - ParserConfig", e.getMessage());
 		}
 		return poster;
 	}

@@ -24,6 +24,7 @@ public class SPANHandler extends DefaultHandler {
 	public void startElement(String namespaceURI, String localName,
 			String qName, Attributes atts) throws SAXException {
 		// localName or qName?
+		System.out.println(qName);
 		if (qName.equals("error")) {
 			errorCode = Integer.valueOf(atts.getValue("code"));
 		} else if (qName.equals("poster")) {
