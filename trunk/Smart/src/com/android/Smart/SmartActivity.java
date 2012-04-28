@@ -1,11 +1,20 @@
 package com.android.Smart;
 
+import java.util.List;
+
+import twitter4j.Status;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.TwitterFactory;
+import twitter4j.http.AccessToken;
+import twitter4j.http.RequestToken;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.IntentFilter.MalformedMimeTypeException;
+import android.net.Uri;
 import android.nfc.NfcAdapter;
 import android.nfc.tech.MifareUltralight;
 import android.os.Bundle;
@@ -34,6 +43,14 @@ public class SmartActivity extends SPANActivity {
     private int mCount = 0;
 
 	Intent intent;
+
+	Twitter twitter;
+	RequestToken requestToken;
+//Please put the values of consumerKy and consumerSecret of your app 
+	public final static String consumerKey = "kxYfDQnHd00zmS5cKDzzA"; // "your key here";
+	public final static String consumerSecret = "F8xSK4IX25U3RNOFifbwwzJHanleHeOM8BXW7UDaep0"; // "your secret key here";
+	private final String CALLBACKURL = "T4JOAuth://login";  //Callback URL that tells the WebView to load this activity when it finishes with twitter.com. (see manifest)
+
     /** Called when the activity is first created. */
 
     @Override
@@ -72,7 +89,17 @@ public class SmartActivity extends SPANActivity {
 		// First check if the user is authenticated
 		// If so, then there is no need to show the login screen
 		if (checkAuthStatus()) {
+			Uri uri = intent.getData();
+			if (uri!=null)
+			{
+			String verifier = uri.getQueryParameter("oauth_verifier");
+			String  requestToken=uri.getQueryParameter("oauth_token");
 			
+			Intent newIntent = new Intent(SmartActivity.this, login.class);
+			newIntent.putExtra("oauth_verifier", verifier);
+			newIntent.putExtra("oauth_token", requestToken);
+			startActivity(newIntent);
+			}
 		}
 		
 		
@@ -112,8 +139,7 @@ public class SmartActivity extends SPANActivity {
 
        });
     }
-    
-
+	
 
 	
     @Override
@@ -148,4 +174,5 @@ public class SmartActivity extends SPANActivity {
     		} });
     	alertDialog.show();
     }
+   
 }
