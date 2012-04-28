@@ -1,11 +1,27 @@
 package com.android.Smart;
 
+import java.util.List;
+
+import org.scribe.builder.ServiceBuilder;
+import org.scribe.builder.api.TwitterApi;
+import org.scribe.model.Token;
+import org.scribe.model.Verifier;
+import org.scribe.oauth.OAuthService;
+
+import twitter4j.Status;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.TwitterFactory;
+import twitter4j.http.AccessToken;
+import twitter4j.http.RequestToken;
+
 import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.IntentFilter.MalformedMimeTypeException;
+import android.net.Uri;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.MifareClassic;
@@ -14,6 +30,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,7 +63,20 @@ public class login extends SPANActivity{
     private TagConnector tagConnector;
     
     Intent intent;
-    
+
+	private static Twitter twitter;
+	private static RequestToken requestToken=null;
+	private static String verifier=null;
+	private static AccessToken accessToken=null;
+	private static String tweetText="";
+	
+	private static Tag tagFromIntent=null;
+//Please put the values of consumerKy and consumerSecret of your app 
+	public final static String consumerKey = "3LBMBXOxGkK0febwY2MqA"; // "your key here";
+	public final static String consumerSecret = "upBZ59iEhKMiUdcCd5kOR2bQduM8vAPp658OpF7yE"; // "your secret key here";
+	private final String CALLBACKURL = "T4JOAuth://main";  //Callback URL that tells the WebView to load this activity when it finishes with twitter.com. (see manifest)
+
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -55,7 +85,7 @@ public class login extends SPANActivity{
 		intent = getIntent();
 		tagConnector = new TagConnector();
 		
-		Tag tagFromIntent = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+		tagFromIntent = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
 		
 		String buffer = "not displayed"; //bunde.getString("andrewID");
 		TextView temp=(TextView)findViewById(R.id.text1);
@@ -72,6 +102,8 @@ public class login extends SPANActivity{
 
 		 mText.setText("Scan a tag");
 		
+		
+		 
 		/* intent dispatch */
 		if (tagFromIntent!=null)
 		{
@@ -113,6 +145,7 @@ public class login extends SPANActivity{
 		}
 		
 		Button logIn;
+		Button sendTweet;
 		logIn=(Button)findViewById(R.id.button2);
 		logIn.setOnClickListener(new Button.OnClickListener(){
 			public void onClick(View v)
@@ -126,6 +159,25 @@ public class login extends SPANActivity{
 			   }    	   
 		   });
 		
+		sendTweet = (Button)findViewById(R.id.tweet);
+		sendTweet.setOnClickListener(new Button.OnClickListener(){
+			public void onClick(View v)
+			{
+				if (requestToken==null||verifier==null||accessToken==null)
+				{
+					EditText tweetTextBox=(EditText) findViewById(R.id.tweetText);
+					tweetText=tweetTextBox.getText().toString();
+					OAuthLogin();
+				}
+				else
+				{
+					sendTweet();
+					
+				}
+			}
+			
+			
+		});
 		
        
         
@@ -227,11 +279,44 @@ public class login extends SPANActivity{
 			}
 		}// End of method
 	}*/
-   
+	void OAuthLogin() {
+		String temp= "You have to sign in before sending a tweet.";
+		Toast.makeText(this,temp, Toast.LENGTH_LONG).show();
+		try {
+			twitter = new TwitterFactory().getInstance();
+			twitter.setOAuthConsumer(consumerKey, consumerSecret);
+			requestToken = twitter.getOAuthRequestToken(CALLBACKURL);
+			String authUrl = requestToken.getAuthenticationURL();
+			Intent newIntent=new Intent(Intent.ACTION_VIEW, Uri
+					.parse(authUrl));
+
+			this.startActivity(newIntent);
+		} catch (TwitterException ex) {
+			Toast.makeText(this, ex.getMessage(), Toast.LENGTH_LONG).show();
+			Log.e("in Main.OAuthLogin", ex.getMessage());
+		}
+	}
 	  @Override
 	    public void onResume() {
 	        super.onResume();
+	        Log.i("Resume", "Resume login");
 	        mAdapter.enableForegroundDispatch(this, mPendingIntent, mFilters, mTechLists);
+	        if (twitter==null)
+	        	Log.i("error","empty twitter");
+	        Intent newIntent=getIntent();
+	        verifier=newIntent.getStringExtra("oauth_verifier");
+	        if (verifier!=null)
+	         try {
+			//	verifier = uri.getQueryParameter("oauth_verifier");
+				accessToken = twitter.getOAuthAccessToken(requestToken,verifier);
+				String token = accessToken.getToken(), secret = accessToken
+						.getTokenSecret();
+				displayTimeLine(token, secret); //after everything, display the first tweet 
+				EditText tweetTextBox=(EditText) findViewById(R.id.tweetText);
+				tweetTextBox.setText(tweetText);
+			} catch (TwitterException ex) {
+				Log.e("Main.onNewIntent", "" + ex.getMessage());
+			}
 	    }
 
 	   @Override
@@ -278,10 +363,56 @@ public class login extends SPANActivity{
 	       }
 	       }
 	    }
+	   @SuppressWarnings("deprecation")
+		void displayTimeLine(String token, String secret) {
+			if (null != token && null != secret) {
+				List<Status> statuses = null;
+				try {
+					twitter.setOAuthAccessToken(token, secret);
+					statuses = twitter.getFriendsTimeline();
+					String name =twitter.getScreenName()+" has signed in.";
+					
+					Toast.makeText(this, name, Toast.LENGTH_LONG)
+						.show();
+				} catch (Exception ex) {
+					Toast.makeText(this, "Error:" + ex.getMessage(),
+							Toast.LENGTH_LONG).show();
+					Log.d("Main.displayTimeline",""+ex.getMessage());
+				}
+				
+			} else {
+				Toast.makeText(this, "Not Verified", Toast.LENGTH_LONG).show();
+			}
+		}
 	   
+	   void sendTweet(){
+		   EditText tweetTextBox=(EditText) findViewById(R.id.tweetText);
+			
+		   tweetText=tweetTextBox.getText().toString();
+		   if (tweetText==null|| tweetText.length()==0)
+		   {
+			   Toast.makeText(this,"Can't send empty tweet",Toast.LENGTH_LONG).show();
+			   return;
+		   }
+		   
+		   try {
+			   
+			  
+			  
+			twitter.updateStatus(tweetText);
+			  Toast.makeText(this,"Tweet is sent.",Toast.LENGTH_LONG).show();
+		} catch (TwitterException e) {
+			// TODO Auto-generated catch block
+			 Toast.makeText(this,"Sending fails. Please try again. Error Message: "+e.toString(),Toast.LENGTH_LONG).show();
+		}
+		   
+		   
+	   }
 	    @Override
 	    public void onPause() {
 	        super.onPause();
 	        mAdapter.disableForegroundDispatch(this);
 	    }
+	    
+	  
 }

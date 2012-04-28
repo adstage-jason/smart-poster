@@ -93,7 +93,9 @@ public class SPANActivity extends Activity {
 		Intent newintent = new Intent(SPANActivity.this, AuthenticateActivity.class);
 		if (intent.getExtras()== null)
 		{
-			startActivity(newintent);
+			//startActivity(newintent);
+			intent.setClass(SPANActivity.this, AuthenticateActivity.class);
+			startActivity(intent);
 			Log.i("SmartActivity", "null intent");
 		}
 		else
