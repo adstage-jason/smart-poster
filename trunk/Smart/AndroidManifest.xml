@@ -33,6 +33,12 @@
             </intent-filter> 
             <meta-data android:name="android.nfc.action.TECH_DISCOVERED" android:resource="@xml/filter_nfc"/>
             
+           <intent-filter>
+				<action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.DEFAULT" />
+				<category android:name="android.intent.category.BROWSABLE" />
+				<data android:scheme="T4JOAuth" android:host="main" />
+			</intent-filter>
         	</activity>
         
        <activity android:name=".SmartActivity"
@@ -48,5 +54,6 @@
 		<activity android:name=".LinkPosterActivity"></activity>
 		<activity android:name=".PollPosterActivity"></activity>
 		<activity android:name="AuthenticateActivity" android:label="@string/auth_screen_title"></activity>
+		<activity android:name="TwitterActivity" android:label="@string/auth_screen_title"></activity>
     </application>
 </manifest>
