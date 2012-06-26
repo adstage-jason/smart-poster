@@ -219,7 +219,7 @@ public class SPANActivity extends Activity {
 		return poster;
 	}
 	
-	protected class SubmitVoteTask extends AsyncTask<String, Void, Boolean> {
+	protected class SubmitLikeTask extends AsyncTask<String, Void, Boolean> {
 		
 		private ProgressDialog progressDialog;
 		protected NoSuchPosterException nspe;
@@ -228,7 +228,7 @@ public class SPANActivity extends Activity {
 		
 	    @Override
 	    protected void onPreExecute() {
-	    	progressDialog = ProgressDialog.show(SPANActivity.this, "", "Submitting Vote...");
+	    	progressDialog = ProgressDialog.show(SPANActivity.this, "", "Submitting Like...");
 	    	progressDialog.show();
 	    }
 
@@ -236,7 +236,7 @@ public class SPANActivity extends Activity {
 		protected Boolean doInBackground(String... strings) {
 			for (String tagID : strings) {
 				try {
-					return submitVoteHelper(tagID);
+					return submitLikeHelper(tagID);
 				} catch (NoSuchPosterException e) {
 					nspe = e;
 				} catch (RevokedPosterException e) {
@@ -254,10 +254,10 @@ public class SPANActivity extends Activity {
 	    }
 	}
 	
-	protected boolean submitVoteHelper(String tagID) throws Poster.AlreadyVotedException, 
+	protected boolean submitLikeHelper(String tagID) throws Poster.AlreadyVotedException, 
 		NoSuchPosterException, RevokedPosterException {
 		try {
-			URL url = new URL(serverURL + "vote.php?id=" + tagID);
+			URL url = new URL(serverURL + "like.php?id=" + tagID);
 			HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
 			urlConnection.setInstanceFollowRedirects(true);
 			urlConnection.connect();

@@ -10,18 +10,28 @@ public class PollOption implements Serializable {
 	
 	private static final long serialVersionUID = 4430939148677903860L;
 	private String text;
-	private String postValue;
+	private int optionId;
+	//private String postValue;
 	
-	public PollOption(String text, String postValue) {
+	public PollOption(String text, int optionId) {
 		this.text = text;
-		this.postValue = postValue;
+		this.optionId = optionId;
+		//this.postValue = postValue;
 	}
 	
 	public String getText() {
 		return text;
 	}
+	
+	public int getOptionId() {
+		return optionId;
+	}
 
-	public String getPOSTValue() {
+	/*public String getPOSTValue() {
 		return postValue;
+	}*/	
+	
+	public static class InvalidOptionException extends Exception {
+		private static final long serialVersionUID = -708031545711296888L;
 	}
 }

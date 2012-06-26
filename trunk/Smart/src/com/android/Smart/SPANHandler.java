@@ -58,15 +58,16 @@ public class SPANHandler extends DefaultHandler {
 		PollPoster thePoster = (PollPoster) poster;
 		if (qName.equals("question")) {
 			thePoster.setQuestion(atts.getValue("q"));
-		} else if (qName.equals("link")) {
-			thePoster.setURL(atts.getValue("url"));
-			thePoster.setPOSTKey(atts.getValue("post_key"));
+		//} else if (qName.equals("link")) {
+		//	thePoster.setURL(atts.getValue("url"));
+		//	thePoster.setPOSTKey(atts.getValue("post_key"));
 		} else if (qName.equals("options")) {
 			pollOptions = new ArrayList<PollOption>();
 		} else if (qName.equals("option")) {
 			String text = atts.getValue("text");
-			String postValue = atts.getValue("post_value");
-			PollOption newOption = new PollOption(text, postValue);
+			int optionId = Integer.valueOf(atts.getValue("option_id"));
+			//String postValue = atts.getValue("post_value");
+			PollOption newOption = new PollOption(text, optionId);
 			pollOptions.add(newOption);
 		}
 	}
