@@ -1,12 +1,6 @@
 package com.android.Smart;
 
-import java.util.List;
-
-import twitter4j.Status;
 import twitter4j.Twitter;
-import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
-import twitter4j.http.AccessToken;
 import twitter4j.http.RequestToken;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
@@ -29,8 +23,6 @@ import com.android.Smart.connector.TagConnector;
 
 public class SmartActivity extends SPANActivity {
 	
-	private EditText andrewID;
-    private EditText andrewPassword;
     private TagConnector tagConnector;
 
  // NFC parts
@@ -108,13 +100,9 @@ public class SmartActivity extends SPANActivity {
        logIn.setOnClickListener(new Button.OnClickListener(){
     	   public void onClick(View v)
     	   {
-    		 //  andrewID=(EditText)findViewById(R.id.editText2);
-    	      // andrewPassword=(EditText)findViewById(R.id.editText1);
-    	       
-    	       String buffer="";
-    	       
-    	       Log.i("SmartActivity", String.valueOf(checkAuthStatus()));
-    	       if (checkAuthStatus()) {
+    	       boolean isAuthorized = checkAuthStatus();
+    	       Log.i("SmartActivity", String.valueOf(isAuthorized));
+    	       if (isAuthorized) {
 					Toast.makeText(SmartActivity.this, "User already authenticated!", Toast.LENGTH_SHORT).show();
 					Intent newintent = new Intent(SmartActivity.this, login.class);
 					if (intent.getExtras()== null)
