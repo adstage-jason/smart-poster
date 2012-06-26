@@ -50,7 +50,14 @@ public class SPANActivity extends Activity {
 		CookieSyncManager.createInstance(getApplicationContext());
 	}
 	
-	protected boolean checkAuthStatus() {
+	protected class CheckAuthStatusTask extends AsyncTask<Void, Void, Boolean> {
+		@Override
+		protected Boolean doInBackground(Void... params) {
+			return checkAuthStatusHelper();
+		}
+	}
+	
+	protected boolean checkAuthStatusHelper() {
 		
 		// First check if an app server cookie exists
 		CookieManager mgr = CookieManager.getInstance();
@@ -221,7 +228,7 @@ public class SPANActivity extends Activity {
 		
 	    @Override
 	    protected void onPreExecute() {
-	    	progressDialog = ProgressDialog.show(SPANActivity.this, "", "Loading Poster...");
+	    	progressDialog = ProgressDialog.show(SPANActivity.this, "", "Submitting Vote...");
 	    	progressDialog.show();
 	    }
 
