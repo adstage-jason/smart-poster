@@ -1,32 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" android:orientation="vertical" android:weightSum="1">
-    
-<TextView  
-	android:id="@+id/text1"
-    android:layout_width="fill_parent" 
-    android:layout_height="wrap_content" 
-    android:text="~~~~~">
-    </TextView>
-<TextView  
-	android:id="@+id/text2"
-    android:layout_width="fill_parent" 
-    android:layout_height="wrap_content" 
-    android:text="~~~~~">
-  </TextView>
+    android:layout_height="fill_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:weightSum="1" >
 
-<Button 
-	android:layout_height="wrap_content" 
-	android:text="Log Out" 
-	android:id="@+id/button2" 
-	android:layout_width="match_parent"></Button>
- <TextView  
-	android:id="@+id/tagInformation"
-    android:layout_width="fill_parent" 
-    android:layout_height="wrap_content" 
-    android:text="~~~~~">
-  </TextView>
+    <TextView
+        android:id="@+id/tagInformation"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:layout_weight="0.10"
+        android:text="~~~~~"
+        android:textSize="30dp" />
+
+    <ProgressBar
+        android:id="@+id/progressBar1"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="164dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.40" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="142dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.17"
+        android:text="     " />
+
  <EditText android:layout_width="match_parent" android:id="@+id/tweetText" android:layout_height="wrap_content" android:inputType="textMultiLine"></EditText>
  <Button android:layout_width="match_parent" android:text="Tweet" android:layout_height="wrap_content" android:id="@+id/tweet"></Button>
+
+ <Button
+     android:id="@+id/button2"
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+     android:text="Log Out" />
+
  </LinearLayout>

@@ -2,19 +2,12 @@ package com.android.Smart;
 
 import java.util.List;
 
-import org.scribe.builder.ServiceBuilder;
-import org.scribe.builder.api.TwitterApi;
-import org.scribe.model.Token;
-import org.scribe.model.Verifier;
-import org.scribe.oauth.OAuthService;
-
 import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.http.AccessToken;
 import twitter4j.http.RequestToken;
-
 import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.DialogInterface;
@@ -87,14 +80,6 @@ public class login extends SPANActivity{
 		
 		tagFromIntent = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
 		
-		String buffer = "not displayed"; //bunde.getString("andrewID");
-		TextView temp=(TextView)findViewById(R.id.text1);
-		temp.setText("Your andrewID is "+buffer);
-		
-		temp=(TextView)findViewById(R.id.text2);
-		//buffer= bunde.getString("andrewPassword");
-		temp.setText("Your password is "+ buffer);
-		
 		//tempTag= bunde.getParcelable("tagFromIntent");
 		mText=(TextView)findViewById(R.id.tagInformation);
 		//if (tempTag!=null)
@@ -110,37 +95,8 @@ public class login extends SPANActivity{
 			String tagID = tagConnector.readTag(intent);
 			if (tagID !=null)
 			{
-				
-				Poster poster = null;
-				try {
-					poster = getPoster(tagID);
-				} catch (NoSuchPosterException e) {
-					AlertDialog alertDialog = new AlertDialog.Builder(this).create();  
-					  alertDialog.setTitle("Invalid Poster");  
-					  alertDialog.setButton("OK", new DialogInterface.OnClickListener() {  
-						  public void onClick(DialogInterface dialog, int which) {  
-						  } });
-					  alertDialog.show();
-				} catch (RevokedPosterException e) {
-					AlertDialog alertDialog = new AlertDialog.Builder(this).create();  
-					  alertDialog.setTitle("Disabled Poster");
-					  alertDialog.setButton("OK", new DialogInterface.OnClickListener() {  
-						  public void onClick(DialogInterface dialog, int which) {  
-						  } });
-					  alertDialog.show();
-				}
-		       if (poster instanceof LinkPoster) {
-		    	   LinkPoster lp = (LinkPoster) poster;
-		    	   Intent newIntent = new Intent(this, LinkPosterActivity.class);
-		    	   Log.i("Hello", String.valueOf(lp.getDescription()));
-		    	   newIntent.putExtra("LinkPoster", lp);
-		    	   startActivity(newIntent);
-		       } else if (poster instanceof PollPoster) {
-		    	   Intent newIntent = new Intent(this, PollPosterActivity.class);
-		    	   PollPoster pp = (PollPoster) poster;
-		    	   newIntent.putExtra("PollPoster", pp);
-		    	   startActivity(newIntent);
-		       }
+				LoginGetPosterTask task = new LoginGetPosterTask();
+				task.execute(new String[] { tagID });
 			}
 		}
 		
@@ -322,7 +278,7 @@ public class login extends SPANActivity{
 	   @Override
 	    public void onNewIntent(Intent intent) {
 		   Log.i("Foreground dispatch", "Discovered tag with intent: " + intent);
-	       mText.setText("Discovered tag " + ++mCount + " with intent: " + intent);
+	       //mText.setText("Discovered tag " + ++mCount + " with intent: " + intent);
 	       String tagID = tagConnector.readTag(intent);
 	       if (tagID != null)
 	       {
@@ -330,37 +286,8 @@ public class login extends SPANActivity{
 	    	   Intent newIntent = new Intent(this, login.class);
 	    	   startActivity(newIntent);
 	       }*/
-	    	Poster poster = null;
-			try {
-				poster = getPoster(tagID);
-				System.out.println(poster);
-			} catch (NoSuchPosterException e) {
-				AlertDialog alertDialog = new AlertDialog.Builder(this).create();  
-				  alertDialog.setTitle("Invalid Poster");  
-				  alertDialog.setButton("OK", new DialogInterface.OnClickListener() {  
-					  public void onClick(DialogInterface dialog, int which) {  
-					  } });
-				  alertDialog.show();
-			} catch (RevokedPosterException e) {
-				AlertDialog alertDialog = new AlertDialog.Builder(this).create();  
-				  alertDialog.setTitle("Disabled Poster");
-				  alertDialog.setButton("OK", new DialogInterface.OnClickListener() {  
-					  public void onClick(DialogInterface dialog, int which) {  
-					  } });
-				  alertDialog.show();
-			}
-	       if (poster instanceof LinkPoster) {
-	    	   LinkPoster lp = (LinkPoster) poster;
-	    	   Intent newIntent = new Intent(this, LinkPosterActivity.class);
-	    	   Log.i("Hello", String.valueOf(lp.getDescription()));
-	    	   newIntent.putExtra("LinkPoster", lp);
-	    	   startActivity(newIntent);
-	       } else if (poster instanceof PollPoster) {
-	    	   Intent newIntent = new Intent(this, PollPosterActivity.class);
-	    	   PollPoster pp = (PollPoster) poster;
-	    	   newIntent.putExtra("PollPoster", pp);
-	    	   startActivity(newIntent);
-	       }
+	    	   LoginGetPosterTask task = new LoginGetPosterTask();
+	    	   task.execute(new String[] { tagID });
 	       }
 	    }
 	   @SuppressWarnings("deprecation")
@@ -412,6 +339,39 @@ public class login extends SPANActivity{
 	    public void onPause() {
 	        super.onPause();
 	        mAdapter.disableForegroundDispatch(this);
+	    }
+	    
+	    private class LoginGetPosterTask extends GetPosterTask {
+		    protected void onPostExecute(Poster poster) {   
+				super.onPostExecute(poster);
+				if (nspe != null) {
+					AlertDialog alertDialog = new AlertDialog.Builder(login.this).create();  
+					  alertDialog.setTitle("Invalid Poster");  
+					  alertDialog.setButton("OK", new DialogInterface.OnClickListener() {  
+						  public void onClick(DialogInterface dialog, int which) {  
+						  } });
+					  alertDialog.show();
+				} else if (rpe != null) {
+					AlertDialog alertDialog = new AlertDialog.Builder(login.this).create();  
+					  alertDialog.setTitle("Disabled Poster");
+					  alertDialog.setButton("OK", new DialogInterface.OnClickListener() {  
+						  public void onClick(DialogInterface dialog, int which) {  
+						  } });
+					  alertDialog.show();
+				}
+				if (poster instanceof LinkPoster) {
+					LinkPoster lp = (LinkPoster) poster;
+			    	   Intent newIntent = new Intent(login.this, LinkPosterActivity.class);
+			    	   Log.i("Hello", String.valueOf(lp.getDescription()));
+			    	   newIntent.putExtra("LinkPoster", lp);
+			    	   startActivity(newIntent);
+				} else if (poster instanceof PollPoster) {
+					Intent newIntent = new Intent(login.this, PollPosterActivity.class);
+			    	   PollPoster pp = (PollPoster) poster;
+			    	   newIntent.putExtra("PollPoster", pp);
+			    	   startActivity(newIntent);
+				}
+		    }
 	    }
 	    
 	  

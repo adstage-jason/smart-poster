@@ -21,19 +21,22 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 
 import com.android.Smart.poster.Poster;
+import com.android.Smart.poster.Poster.AlreadyVotedException;
 import com.android.Smart.poster.Poster.NoSuchPosterException;
 import com.android.Smart.poster.Poster.RevokedPosterException;
 
 public class SPANActivity extends Activity {
 	
-	public static final String serverURL = "https://www.ece.cmu.edu/~jasonwu/span/";
+	public static final String serverURL = "https://users.ece.cmu.edu/~jasonwu/span/";
 	private static java.net.CookieManager httpCookieMgr = new java.net.CookieManager();
 	
 	static {
@@ -128,7 +131,7 @@ public class SPANActivity extends Activity {
 		
 		// Store the cookie
 		HttpCookie cookie = new HttpCookie(cookieName, cookieValue);
-		cookie.setDomain("www.ece.cmu.edu");
+		cookie.setDomain("users.ece.cmu.edu");
 		cookie.setPath("/~jasonwu/");
 		cookie.setVersion(0);
 		try {
@@ -144,7 +147,40 @@ public class SPANActivity extends Activity {
 		CookieManager.getInstance().removeAllCookie();
 	}
 	
-	protected Poster getPoster(String tagID) throws Poster.NoSuchPosterException, Poster.RevokedPosterException {
+	protected class GetPosterTask extends AsyncTask<String, Void, Poster> {
+		
+		private ProgressDialog progressDialog;
+		protected NoSuchPosterException nspe;
+		protected RevokedPosterException rpe;
+		
+	    @Override
+	    protected void onPreExecute() {
+	    	progressDialog = ProgressDialog.show(SPANActivity.this, "", "Loading Poster...");
+	    	progressDialog.show();
+	    }
+
+		@Override
+		protected Poster doInBackground(String... strings) {
+			Poster poster = null;
+			for (String tagID : strings) {
+				try {
+					poster = getPosterHelper(tagID);
+				} catch (NoSuchPosterException e) {
+					nspe = e;
+				} catch (RevokedPosterException e) {
+					rpe = e;
+				}
+			}
+			return poster;
+		}
+		
+		@Override
+	    protected void onPostExecute(Poster poster) {   
+			progressDialog.dismiss();
+	    }
+	}
+	
+	protected Poster getPosterHelper(String tagID) throws Poster.NoSuchPosterException, Poster.RevokedPosterException {
 		Poster poster = null;
 		try {
 			URL url = new URL(serverURL + "get_poster.php?id=" + tagID);
@@ -176,7 +212,42 @@ public class SPANActivity extends Activity {
 		return poster;
 	}
 	
-	protected boolean submitVote(String tagID) throws Poster.AlreadyVotedException, 
+	protected class SubmitVoteTask extends AsyncTask<String, Void, Boolean> {
+		
+		private ProgressDialog progressDialog;
+		protected NoSuchPosterException nspe;
+		protected RevokedPosterException rpe;
+		protected AlreadyVotedException ave;
+		
+	    @Override
+	    protected void onPreExecute() {
+	    	progressDialog = ProgressDialog.show(SPANActivity.this, "", "Loading Poster...");
+	    	progressDialog.show();
+	    }
+
+		@Override
+		protected Boolean doInBackground(String... strings) {
+			for (String tagID : strings) {
+				try {
+					return submitVoteHelper(tagID);
+				} catch (NoSuchPosterException e) {
+					nspe = e;
+				} catch (RevokedPosterException e) {
+					rpe = e;
+				} catch (AlreadyVotedException e) {
+					ave = e;
+				}
+			}
+			return false;
+		}
+		
+		@Override
+	    protected void onPostExecute(Boolean wasSuccessful) {
+			progressDialog.dismiss();
+	    }
+	}
+	
+	protected boolean submitVoteHelper(String tagID) throws Poster.AlreadyVotedException, 
 		NoSuchPosterException, RevokedPosterException {
 		try {
 			URL url = new URL(serverURL + "vote.php?id=" + tagID);
