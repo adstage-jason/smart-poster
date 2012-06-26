@@ -40,12 +40,12 @@ public class LinkPosterActivity extends SPANActivity {
 		likeButton.setOnClickListener(new Button.OnClickListener(){
 			public void onClick(View v)
 			{
-				LinkPosterSubmitVoteTask task = new LinkPosterSubmitVoteTask();
+				LinkPosterSubmitLikeTask task = new LinkPosterSubmitLikeTask();
 		    	task.execute(new String[] { poster.getTagID() });
 		    }});
 	}
 	
-	private class LinkPosterSubmitVoteTask extends SubmitVoteTask {
+	private class LinkPosterSubmitLikeTask extends SubmitLikeTask {
 		@Override
 	    protected void onPostExecute(Boolean wasSuccessful) {
 			super.onPostExecute(wasSuccessful);
