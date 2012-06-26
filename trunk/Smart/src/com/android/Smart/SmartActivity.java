@@ -15,7 +15,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -80,49 +79,16 @@ public class SmartActivity extends SPANActivity {
 		
 		// First check if the user is authenticated
 		// If so, then there is no need to show the login screen
-		if (checkAuthStatus()) {
-			Uri uri = intent.getData();
-			if (uri!=null)
-			{
-			String verifier = uri.getQueryParameter("oauth_verifier");
-			String  requestToken=uri.getQueryParameter("oauth_token");
-			
-			Intent newIntent = new Intent(SmartActivity.this, login.class);
-			newIntent.putExtra("oauth_verifier", verifier);
-			newIntent.putExtra("oauth_token", requestToken);
-			startActivity(newIntent);
-			}
-		}
-		
+		LoginScreenCheckAuthTask task = new LoginScreenCheckAuthTask();
+		task.execute();
 		
        Button logIn;
        logIn=(Button)findViewById(R.id.button1);Log.i("flow1", "flow");
        logIn.setOnClickListener(new Button.OnClickListener(){
     	   public void onClick(View v)
     	   {
-    	       boolean isAuthorized = checkAuthStatus();
-    	       Log.i("SmartActivity", String.valueOf(isAuthorized));
-    	       if (isAuthorized) {
-					Toast.makeText(SmartActivity.this, "User already authenticated!", Toast.LENGTH_SHORT).show();
-					Intent newintent = new Intent(SmartActivity.this, login.class);
-					if (intent.getExtras()== null)
-					{
-						startActivity(newintent);
-						Log.i("SmartActivity", "null intent");
-					}
-					else
-					{
-						intent.setClass(SmartActivity.this, login.class);
-						startActivity(intent);
-						Log.i("SmartActivity", "not null intent");
-					}
-					
-				} else {
-					Log.i("SmartActivity", "Authenticating user!");
-					
-					authenticateUser(intent);
-				}
-    	       finish();
+    		   LoginButtonCheckAuthTask task = new LoginButtonCheckAuthTask();
+    		   task.execute();
 	       }
 
        });
@@ -161,6 +127,51 @@ public class SmartActivity extends SPANActivity {
     			return;  
     		} });
     	alertDialog.show();
+    }
+    
+    private class LoginScreenCheckAuthTask extends CheckAuthStatusTask {
+		@Override
+	    protected void onPostExecute(Boolean isAuthorized) {   
+			Uri uri = intent.getData();
+			if (uri!=null)
+			{
+				String verifier = uri.getQueryParameter("oauth_verifier");
+				String  requestToken=uri.getQueryParameter("oauth_token");
+				
+				Intent newIntent = new Intent(SmartActivity.this, login.class);
+				newIntent.putExtra("oauth_verifier", verifier);
+				newIntent.putExtra("oauth_token", requestToken);
+				startActivity(newIntent);
+			}
+	    }
+    }
+    
+    private class LoginButtonCheckAuthTask extends CheckAuthStatusTask {
+		@Override
+	    protected void onPostExecute(Boolean isAuthorized) {   
+ 	       Log.i("SmartActivity", String.valueOf(isAuthorized));
+ 	       if (isAuthorized) {
+				Toast.makeText(SmartActivity.this, "User already authenticated!", Toast.LENGTH_SHORT).show();
+				Intent newintent = new Intent(SmartActivity.this, login.class);
+				if (intent.getExtras()== null)
+				{
+					startActivity(newintent);
+					Log.i("SmartActivity", "null intent");
+				}
+				else
+				{
+					intent.setClass(SmartActivity.this, login.class);
+					startActivity(intent);
+					Log.i("SmartActivity", "not null intent");
+				}
+				
+			} else {
+				Log.i("SmartActivity", "Authenticating user!");
+				
+				authenticateUser(intent);
+			}
+ 	       	SmartActivity.this.finish();
+	    }
     }
    
 }
