@@ -30,6 +30,7 @@ import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 
 import com.android.Smart.poster.Poster;
+import com.android.Smart.poster.Poster.AccessRevokedException;
 import com.android.Smart.poster.Poster.AlreadyVotedException;
 import com.android.Smart.poster.Poster.NoSuchPosterException;
 import com.android.Smart.poster.Poster.RevokedPosterException;
@@ -71,7 +72,7 @@ public class SPANActivity extends Activity {
 		try {
 			
 			// Send a GET request to the server
-			url = new URL(serverURL);
+			url = new URL(serverURL + "check_auth.html");
 			urlConnection = (HttpURLConnection) url.openConnection();
 			urlConnection.setInstanceFollowRedirects(false);
 			urlConnection.connect();
@@ -81,12 +82,18 @@ public class SPANActivity extends Activity {
 			
 			// WebISO does not use a 3xx redirect, so we need to check the meta tags in <head>
 			String inputLine;
-			while ((inputLine = br.readLine()) != null) 
+			/*while ((inputLine = br.readLine()) != null) 
 				if (inputLine.contains("<meta http-equiv=\"Refresh\">")) {
 					br.close();
 					return false;
 				}
-			br.close();
+			br.close();*/
+			while ((inputLine = br.readLine()) != null) {
+				if (inputLine.contains("<p>Authenticated.</p>")) {
+					br.close();
+					return true;
+				}
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -94,7 +101,7 @@ public class SPANActivity extends Activity {
 	    		urlConnection.disconnect();
 	    }
 		Log.i("CheckAuthStatus()", "User is authenticated!");
-		return true;
+		return false;
 	}
 	
 	protected void authenticateUser(Intent intent) {
@@ -159,6 +166,7 @@ public class SPANActivity extends Activity {
 		private ProgressDialog progressDialog;
 		protected NoSuchPosterException nspe;
 		protected RevokedPosterException rpe;
+		protected AccessRevokedException are;
 		
 	    @Override
 	    protected void onPreExecute() {
@@ -176,6 +184,8 @@ public class SPANActivity extends Activity {
 					nspe = e;
 				} catch (RevokedPosterException e) {
 					rpe = e;
+				} catch (AccessRevokedException e) {
+					are = e;
 				}
 			}
 			return poster;
@@ -187,7 +197,9 @@ public class SPANActivity extends Activity {
 	    }
 	}
 	
-	protected Poster getPosterHelper(String tagID) throws Poster.NoSuchPosterException, Poster.RevokedPosterException {
+	protected Poster getPosterHelper(String tagID) throws NoSuchPosterException, 
+		RevokedPosterException, AccessRevokedException {
+		
 		Poster poster = null;
 		try {
 			URL url = new URL(serverURL + "get_poster.php?id=" + tagID);
@@ -208,6 +220,8 @@ public class SPANActivity extends Activity {
 				throw new Poster.NoSuchPosterException();
 			} else if (handler.getErrorCode() == 2) {
 				throw new Poster.RevokedPosterException();
+			} else if (handler.getErrorCode() == 6) {
+				throw new Poster.AccessRevokedException();
 			}
 		} catch (IOException e) {
 			Log.i("getPoster - IO", e.getMessage());

@@ -37,7 +37,7 @@ import com.android.Smart.poster.Poster.RevokedPosterException;
 
 public class PollPosterActivity extends SPANActivity {
 	
-	PollPoster poster = null;
+	private PollPoster poster = null;
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

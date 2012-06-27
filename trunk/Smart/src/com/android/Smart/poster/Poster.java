@@ -26,5 +26,13 @@ public abstract class Poster implements Serializable {
 	public static class AlreadyVotedException extends Exception {
 		private static final long serialVersionUID = -7335482597453351924L;
 	}
+	
+	public static class AlreadyCommentedException extends Exception {
+		private static final long serialVersionUID = 7890010643543366136L;
+	}
+	
+	public static class AccessRevokedException extends Exception {
+		private static final long serialVersionUID = 2622749031426062640L;
+	}
 
 }
