@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_name">Smart Posters with NFC</string>
+	<string name="app_name">NFC Smart Posters</string>
 	<string name="logIn">Please log in"</string>
     <string name="andrewID">Andrew ID</string>
     <string name="andrewPassword">Password</string>
@@ -15,4 +15,5 @@
     <string name="login_button_title">Login</string>
     <string name="open_in_browser">Open in Browser</string>
     <string name="like">Like!</string>
+    <string name="comment">Comment</string>
 </resources>

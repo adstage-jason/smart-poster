@@ -40,6 +40,12 @@
         android:text="@string/open_in_browser" />
 
     <Button
+        android:id="@+id/button7"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/comment" />
+
+    <Button
         android:id="@+id/button5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
