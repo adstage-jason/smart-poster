@@ -14,17 +14,19 @@ public final class R {
         public static final int cmu=0x7f020000;
         public static final int cmu_logo=0x7f020001;
         public static final int icon=0x7f020002;
+        public static final int icon_old=0x7f020003;
     }
     public static final class id {
+        public static final int TextView01=0x7f06000d;
         public static final int auth_webview=0x7f060000;
         public static final int button1=0x7f06000f;
-        public static final int button2=0x7f060009;
+        public static final int button2=0x7f06000c;
         public static final int button3=0x7f060005;
-        public static final int button5=0x7f060006;
+        public static final int button5=0x7f060007;
+        public static final int button7=0x7f060006;
         public static final int description_text=0x7f060002;
-        public static final int imageView1=0x7f06000d;
+        public static final int imageView1=0x7f06000e;
         public static final int list=0x7f06001b;
-        public static final int logIntext=0x7f06000e;
         public static final int option1_button=0x7f060011;
         public static final int option2_button=0x7f060012;
         public static final int option3_button=0x7f060013;
@@ -33,16 +35,15 @@ public final class R {
         public static final int option6_button=0x7f060016;
         public static final int option7_button=0x7f060017;
         public static final int option8_button=0x7f060018;
+        public static final int progressBar1=0x7f060009;
         public static final int question_text=0x7f060010;
         public static final int signinwithtwitter_webview=0x7f060019;
-        public static final int tagInformation=0x7f06000a;
-        public static final int text1=0x7f060007;
-        public static final int text2=0x7f060008;
+        public static final int tagInformation=0x7f060008;
         public static final int textView1=0x7f060001;
         public static final int textView2=0x7f060003;
         public static final int title=0x7f06001a;
-        public static final int tweet=0x7f06000c;
-        public static final int tweetText=0x7f06000b;
+        public static final int tweet=0x7f06000b;
+        public static final int tweetText=0x7f06000a;
         public static final int url_text=0x7f060004;
     }
     public static final class layout {
@@ -61,6 +62,7 @@ public final class R {
         public static final int auth_button_label=0x7f050005;
         public static final int auth_screen_title=0x7f050006;
         public static final int check_auth_status_title=0x7f05000a;
+        public static final int comment=0x7f05000f;
         public static final int like=0x7f05000e;
         public static final int logIn=0x7f050001;
         public static final int login_button_title=0x7f05000c;
