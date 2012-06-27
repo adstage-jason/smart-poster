@@ -358,6 +358,13 @@ public class login extends SPANActivity{
 						  public void onClick(DialogInterface dialog, int which) {  
 						  } });
 					  alertDialog.show();
+				} else if (are != null) {
+					AlertDialog alertDialog = new AlertDialog.Builder(login.this).create();  
+					  alertDialog.setTitle("Not Authorized");
+					  alertDialog.setButton("OK", new DialogInterface.OnClickListener() {  
+						  public void onClick(DialogInterface dialog, int which) {  
+						  } });
+					  alertDialog.show();
 				}
 				if (poster instanceof LinkPoster) {
 					LinkPoster lp = (LinkPoster) poster;
